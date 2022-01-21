@@ -3,7 +3,7 @@
 - docker image import
     - docker import docker_image.tar
     - docker images
-        - 금방 올린 image의 id 확인
+        - IMAGE ID 확인
         
         ```python
         (base) jini1114@user1:~/git$ docker import final.tar
