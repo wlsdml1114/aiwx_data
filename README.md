@@ -6,7 +6,7 @@
         - IMAGE ID 확인
         
         ```python
-        (base) jini1114@user1:~/git$ docker import final.tar
+        (base) jini1114@user1:~/git$ docker import IMAGE.tar
         sha256:0e5831183a4990d2b78fd9adfc2e2dfef234bd507c5316b71aabb18306e6512b
         (base) jini1114@user1:~/git$ docker images
         REPOSITORY                       TAG       IMAGE ID       CREATED         SIZE
@@ -18,14 +18,12 @@
     
     ```python
     (base) jini1114@user1:~/git$ docker run -it --gpus all --ipc=host -e NVIDIA_VISIBLE_DEVICES=all -v /mnt/ai-nas02/WORK/jini1114/proof_of_validity/weather_prediction:/testdata/ --name final_test 0e5831183a49  /bin/bash
-    6669d8cf83bfe8053021e7d6f91b43d7d5f30ac1855616829e30047292b9546f
     ```
 - 어노테이션 탐지모델 docker run
     - docker run -it --gpus all --ipc=host -e NVIDIA_VISIBLE_DEVICES=all -v /path/annotation:/testdata/ --name final_test IMAGE_ID  /bin/bash
 
     ```python
     (base) jini1114@user1:~/git$ docker run -it --gpus all --ipc=host -e NVIDIA_VISIBLE_DEVICES=all -v /mnt/ai-nas02/WORK/jini1114/proof_of_validity/weather_prediction:/testdata/ --name final_test 0e5831183a49  /bin/bash
-    6669d8cf83bfe8053021e7d6f91b43d7d5f30ac1855616829e30047292b9546f
     ```
 
 - git 다운로드 후 쉘스크립트 실행
