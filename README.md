@@ -5,9 +5,9 @@
     - 위험기상 예측모델 docker image import
         - docker import weather_prediction.tar
     - 어노테이션 탐지모델 docker image import
-	- docker import annotation.tar
+        - docker import annotation.tar
     - import된 이미지의 IMAGE ID 확인
-	- 추후 run에 사용되기 때문에 'docker images' 명령어를 통해 IMAGE ID를 확인해두어야함
+        - 추후 run에 사용되기 때문에 'docker images' 명령어를 통해 IMAGE ID를 확인해두어야함
         
     ```python
     (base) jini1114@user1:~/git$ docker import IMAGE.tar
