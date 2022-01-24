@@ -66,9 +66,18 @@ for name in names:
         fn=0
         tp=0
     res = np.array([[tn,fp],[fn,tp]])
-    pre = tp/(tp+fp)
-    recall = tp/(tp+fn)
-    f1 = 2*(pre*recall)/(pre+recall)
+    try:
+        pre = tp/(tp+fp)
+    except :
+        pre = 0
+    try :
+        recall = tp/(tp+fn)
+    except :
+        recall = 0
+    try :
+        f1 = 2*(pre*recall)/(pre+recall)
+    except : 
+        f1 = 0
     print(res)
     print('f1-score : ',f1)
     print('acc : ',(tn+tp)/(tn+tp+fn+fp))
