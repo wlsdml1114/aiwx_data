@@ -20,13 +20,13 @@
         
 - 위험기상 예측모델 docker run
     - docker run -it --gpus all --ipc=host -e NVIDIA_VISIBLE_DEVICES=all -v /path/weather_prediction:/testdata/ --name final_test IMAGE_ID  /bin/bash
-    
+        - 여기서 -v 옵션 뒤에 있는 path는 데이터셋을 다운로드 받은 위치를 절대경로로 작성
     ```python
     (base) jini1114@user1:~/git$ docker run -it --gpus all --ipc=host -e NVIDIA_VISIBLE_DEVICES=all -v /mnt/ai-nas02/WORK/jini1114/proof_of_validity/weather_prediction:/testdata/ --name final_test 0e5831183a49  /bin/bash
     ```
 - 어노테이션 탐지모델 docker run
     - docker run -it --gpus all --ipc=host -e NVIDIA_VISIBLE_DEVICES=all -v /path/annotation:/testdata/ --name final_test IMAGE_ID  /bin/bash
-
+        - 여기서 -v 옵션 뒤에 있는 path는 데이터셋을 다운로드 받은 위치를 절대경로로 작성
     ```python
     (base) jini1114@user1:~/git$ docker run -it --gpus all --ipc=host -e NVIDIA_VISIBLE_DEVICES=all -v /mnt/ai-nas02/WORK/jini1114/proof_of_validity/weather_prediction:/testdata/ --name final_test 0e5831183a49  /bin/bash
     ```
