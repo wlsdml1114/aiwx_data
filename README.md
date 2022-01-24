@@ -53,5 +53,5 @@
         - 실행 로그는 logs.txt에 저장
     - 위험기상 예측모델
         - 폭우(rain), 폭염(heat), 폭설(snow)의 이름으로 모델 예측결과인 prediction.csv와 실제 정답인 target.csv를 별도의 파일로 저장
-    - 어노테이션 탐지모델ㅑ
+    - 어노테이션 탐지모델
         - 16종의 어노테이션 각각에 대한 탐지결과 grid cell인 prediction.csv와 실제 정답 grid cell인 target.csv를 별도의 파일로 저장
