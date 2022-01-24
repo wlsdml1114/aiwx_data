@@ -38,7 +38,6 @@ for name in names:
         print(name,mode,'data_loading..')
         pred = np.load(os.path.join(eval_path,name+'_'+mode+'_pred.npy'))
         target = np.load(os.path.join(eval_path,name+'_'+mode+'_target.npy'))
-        print('test dataset length :',len(pred))
         target[target >0.5] = 1
         target[target <=0.5] = 0
         precision, recall, thresholds = precision_recall_curve(target.flatten(), pred.flatten())
@@ -57,6 +56,7 @@ for name in names:
 
     pred = temp_pred
     target = temp_target
+    print('test dataset length :',len(pred))
 
     try :
         tn, fp, fn, tp = confusion_matrix(target.flatten(), pred.flatten()).ravel()
