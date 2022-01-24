@@ -44,42 +44,30 @@ for name in names:
         precision, recall, thresholds = precision_recall_curve(target.flatten(), pred.flatten())
         f1 = 2*(precision*recall)/(precision+recall)
         f1 = np.nan_to_num(f1)
+        print('f1-score :',np.max(f1))
         thr = thresholds[np.argmax(f1)]
 
         pred[pred >thr] = 1
         pred[pred <=thr] = 0
-        if mode == 'sat':
-            temp_pred = pred
-            temp_target = target
-        else :
-            temp_pred = np.vstack([temp_pred,pred])
-            temp_target = np.vstack([temp_target,target])
+        try :
+            tn, fp, fn, tp = confusion_matrix(target.flatten(), pred.flatten()).ravel()
+        except :
+            tn = confusion_matrix(target.flatten(), pred.flatten()).ravel()[0]
+            fp=0
+            fn=0
+            tp=0
+        res = np.array([[tn,fp],[fn,tp]])
 
-    pred = temp_pred
-    target = temp_target
+        print(res)
+        print('acc : ',(tn+tp)/(tn+fp+fn+tp))
 
-    try :
-        tn, fp, fn, tp = confusion_matrix(target.flatten(), pred.flatten()).ravel()
-    except :
-        tn = confusion_matrix(target.flatten(), pred.flatten()).ravel()[0]
-        fp=0
-        fn=0
-        tp=0
-    res = np.array([[tn,fp],[fn,tp]])
-    pre = tp/(tp+fp)
-    recall = tp/(tp+fn)
-    f1 = 2*(pre*recall)/(pre+recall)
-    print(res)
-    print('f1-score : ',f1)
-    print('acc : ',(tn+tp)/(tn+tp+fn+fp))
+        target = target.reshape(target.shape[0],400)
+        pred = pred.reshape(pred.shape[0],400)
+        target_csv = pd.DataFrame(target, columns=column)
+        pred_csv = pd.DataFrame(pred, columns=column)
 
-    target = target.reshape(target.shape[0],400)
-    pred = pred.reshape(pred.shape[0],400)
-    target_csv = pd.DataFrame(target, columns=column)
-    pred_csv = pd.DataFrame(pred, columns=column)
-
-    target_csv.to_csv(os.path.join(output_path,'%s_target.csv'%(name)),index=False)
-    pred_csv.to_csv(os.path.join(output_path,'%s_prediction.csv'%(name)),index=False)
+        target_csv.to_csv(os.path.join(output_path,'%s_%s_target.csv'%(name,mode)),index=False)
+        pred_csv.to_csv(os.path.join(output_path,'%s_%s_prediction.csv'%(name,mode)),index=False)
         
 
 print((datetime.now()+timedelta(hours=9)).strftime('%Y-%m-%d %H:%M:%S'))
