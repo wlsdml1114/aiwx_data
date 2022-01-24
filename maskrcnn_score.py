@@ -74,12 +74,7 @@ for name in names:
         recall = tp/(tp+fn)
     except :
         recall = 0
-    try :
-        f1 = 2*(pre*recall)/(pre+recall)
-    except : 
-        f1 = 0
     print(res)
-    print('f1-score : ',f1)
     print('acc : ',(tn+tp)/(tn+tp+fn+fp))
 
     target = target.reshape(target.shape[0],400)
