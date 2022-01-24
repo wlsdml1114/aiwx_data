@@ -2,6 +2,7 @@
 
 - docker 이미지 import
     - docker_image 디렉토리로 이동
+
     - 위험기상 예측모델 docker image import
         - docker import weather_prediction.tar
     - 어노테이션 탐지모델 docker image import
@@ -46,3 +47,11 @@
     cd /aiwx_data/
     sh MASK_RCNN.sh
     ```
+
+- 모델 결과 확인
+    - test_results 디렉토리에 모델의 최종 결과를 csv형태로 저장
+        - 실행 로그는 logs.txt에 저장
+    - 위험기상 예측모델
+        - 폭우(rain), 폭염(heat), 폭설(snow)의 이름으로 모델 예측결과인 prediction.csv와 실제 정답인 target.csv를 별도의 파일로 저장
+    - 어노테이션 탐지모델ㅑ
+        - 16종의 어노테이션 각각에 대한 탐지결과 grid cell인 prediction.csv와 실제 정답 grid cell인 target.csv를 별도의 파일로 저장
