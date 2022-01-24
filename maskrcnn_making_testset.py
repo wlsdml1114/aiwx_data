@@ -100,7 +100,7 @@ for name in names :
             else :
                 final = np.vstack([final,sat])
         except Exception as e:
-            print(e)
+            pass
         START_DATE = START_DATE+relativedelta(months=1)
     np.save(os.path.join(out_dir,name,'rad.npy'),final)
 
@@ -119,7 +119,7 @@ for name in names :
             else :
                 final = np.vstack([final,sat])
         except Exception as e:
-            print(e)
+            pass
         START_DATE = START_DATE+relativedelta(months=1)
     np.save(os.path.join(out_dir,name,'mask.npy'),final)
 
@@ -138,6 +138,6 @@ for name in names :
             else :
                 final = np.vstack([final,sat])
         except Exception as e:
-            print(e)
+            pass
         START_DATE = START_DATE+relativedelta(months=1)
     np.save(os.path.join(out_dir,name,'sat.npy'),final)
