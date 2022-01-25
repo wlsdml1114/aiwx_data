@@ -31,7 +31,7 @@ def find_value(sdate, edate, in_dir, out_dir):
     dt_sdate = datetime.strptime(sdate, fmt)
     dt_edate = datetime.strptime(edate, fmt)
     now = dt_sdate
-    grid = np.load('./ea_2km_latlong.npy')
+    grid = np.load('/data/ea_2km_latlong.npy')
     mlat = grid[0,:,:]
     mlon = grid[1,:,:]
     names = np.array(['LLJ', 'W_SNOW','E_SNOW','WET_SN','CUM_SN','COLD_FRONT','WARM_FRONT','OCC_FRONT','H_POINT','L_POINT'
