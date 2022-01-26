@@ -32,6 +32,9 @@
     ```
 
 - git 다운로드 후 쉘스크립트 실행
+    - setting.ini 파일의 경로 수정
+        - test_path, model_path, output_path를 mount한 위치에 맞게 수정
+
     - 위험기상 예측모델
     
     ```python
