@@ -104,6 +104,8 @@ START_DATE = datetime.strptime(config['date']['start_date'],'%Y-%m-%d %H:%M:%S')
 END_DATE = datetime.strptime(config['date']['end_date'],'%Y-%m-%d %H:%M:%S')
 path = config['path']['test_path']
 
+if os.path.exists((os.path.join(path,'processed_data/rad_images_ar.npy')):
+    sys.exit()
 
 NOW_DATE = START_DATE
 images = []
