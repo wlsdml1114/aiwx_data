@@ -49,6 +49,10 @@ Origin_path = config['path']['test_path']
 
 gk2a_path = "sat/png/%Y%m/%Y%m%d%H%M_KOMPSAT2A_KO_IR112.png"
 
+if os.path.exists(os.path.join(Origin_path,'processed_data/sat_images_ar.npy')):
+    print('preprocessed image already exist')
+    sys.exit()
+
 NOW_DATE = START_DATE
 images = []
 use_date = []
