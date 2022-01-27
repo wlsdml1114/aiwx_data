@@ -1,7 +1,28 @@
 # 유효성 검증용 docker 사용법
 
-- docker 이미지 import
-    - docker_image 디렉토리로 이동
+- docker 이미지 다운로드
+    - 최신 도커이미지 확인
+        - https://github.com/wlsdml1114/aiwx_data/pkgs/container/aiwx_koast
+    - 도커이미지 다운로드
+
+    ```python
+    (base) jini1114@user1:/jini1114$ docker pull ghcr.io/wlsdml1114/aiwx_koast:1.5
+    1.5: Pulling from wlsdml1114/aiwx_koast
+    Digest: sha256:3eae99bfad870bf70cea7bb9da7e18c2bc08088a3e9ccdaf6830332ce3fe93e6
+    Status: Image is up to date for ghcr.io/wlsdml1114/aiwx_koast:1.5
+    ghcr.io/wlsdml1114/aiwx_koast:1.5
+    ``` 
+
+    - 도커 이미지의 repository와 tag 확인
+
+    ```python
+    (base) jini1114@user1:/mnt/ai-nas02/WORK/jini1114$ docker images
+    REPOSITORY                       TAG    IMAGE ID       CREATED         SIZE
+    ghcr.io/wlsdml1114/aiwx_koast    1.5    ca205257db03   5 days ago      8.76GB
+    ```
+
+- docker 이미지 import (docker 이미지가 있는경우)
+    - 도커이미지 디렉토리로 이동
 
     - 위험기상 예측모델 docker image import
         - docker import weather_prediction.tar
@@ -19,16 +40,22 @@
     ```
         
 - 위험기상 예측모델 docker run
-    - docker run -it --gpus all --ipc=host -e NVIDIA_VISIBLE_DEVICES=all -v /path/weather_prediction:/testdata/ --name final_test IMAGE_ID  /bin/bash
+    - docker run -it --gpus all --ipc=host -e NVIDIA_VISIBLE_DEVICES=all -v /path/위험기상예측모델/평가용데이터셋/:/testdata/test_dataset/ -v /path/위험기상예측모델/시험결과/:/testdata/test_results/ --name final_test IMAGE_ID  /bin/bash
         - 여기서 -v 옵션 뒤에 있는 path는 데이터셋을 다운로드 받은 위치를 절대경로로 작성
     ```python
-    (base) jini1114@user1:~/git$ docker run -it --gpus all --ipc=host -e NVIDIA_VISIBLE_DEVICES=all -v /mnt/ai-nas02/WORK/jini1114/proof_of_validity/weather_prediction:/testdata/ --name final_test 0e5831183a49  /bin/bash
+    #repository에서 다운받은경우
+    (base) jini1114@user1:/mnt/ai-nas02/WORK/jini1114$ docker run -it --gpus all --ipc=host -e NVIDIA_VISIBLE_DEVICES=all -v /mnt/ai-nas02/WORK/jini1114/validation/위험기상예측모델/평가용데이터셋/:/testdata/test_dataset/ -v /mnt/ai-nas02/WORK/jini1114/validation/위험기상예측모델/시험결과/:/testdata/test_results/ --name final_test ghcr.io/wlsdml1114/aiwx_koast:1.5 /bin/bash
+    #import한 경우
+    (base) jini1114@user1:/mnt/ai-nas02/WORK/jini1114$ docker run -it --gpus all --ipc=host -e NVIDIA_VISIBLE_DEVICES=all -v /mnt/ai-nas02/WORK/jini1114/validation/위험기상예측모델/평가용데이터셋/:/testdata/test_dataset/ -v /mnt/ai-nas02/WORK/jini1114/validation/위험기상예측모델/시험결과/:/testdata/test_results/ --name final_test 0e5831183a49 /bin/bash
     ```
 - 어노테이션 탐지모델 docker run
-    - docker run -it --gpus all --ipc=host -e NVIDIA_VISIBLE_DEVICES=all -v /path/annotation:/testdata/ --name final_test IMAGE_ID  /bin/bash
+    - docker run -it --gpus all --ipc=host -e NVIDIA_VISIBLE_DEVICES=all -v /path/어노테이션탐지모델/평가용데이터셋/:/testdata/test_dataset/ -v /path/어노테이션탐지모델/시험결과/:/testdata/test_results/ --name final_test IMAGE_ID  /bin/bash
         - 여기서 -v 옵션 뒤에 있는 path는 데이터셋을 다운로드 받은 위치를 절대경로로 작성
     ```python
-    (base) jini1114@user1:~/git$ docker run -it --gpus all --ipc=host -e NVIDIA_VISIBLE_DEVICES=all -v /mnt/ai-nas02/WORK/jini1114/proof_of_validity/weather_prediction:/testdata/ --name final_test 0e5831183a49  /bin/bash
+    #repository에서 다운받은 경우
+    (base) jini1114@user1:/mnt/ai-nas02/WORK/jini1114$ docker run -it --gpus all --ipc=host -e NVIDIA_VISIBLE_DEVICES=all -v /mnt/ai-nas02/WORK/jini1114/validation/어노테이션탐지모델/평가용데이터셋/:/testdata/test_dataset/ -v /mnt/ai-nas02/WORK/jini1114/validation/어노테이션탐지모델/시험결과/:/testdata/test_results/ --name final_test ghcr.io/wlsdml1114/aiwx_koast:1.5 /bin/bash
+    #import한 경우 
+    (base) jini1114@user1:/mnt/ai-nas02/WORK/jini1114$ docker run -it --gpus all --ipc=host -e NVIDIA_VISIBLE_DEVICES=all -v /mnt/ai-nas02/WORK/jini1114/validation/어노테이션탐지모델/평가용데이터셋/:/testdata/test_dataset/ -v /mnt/ai-nas02/WORK/jini1114/validation/어노테이션탐지모델/시험결과/:/testdata/test_results/ --name final_test 0e5831183a49 /bin/bash
     ```
 
 - git 다운로드 후 쉘스크립트 실행
