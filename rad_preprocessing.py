@@ -6,7 +6,8 @@ from datetime import datetime, timedelta
 from PIL import Image
 import matplotlib.pyplot as plt
 from collections import Counter
-from tqdm import tqdm 
+from tqdm import tqdm
+import sys
 import configparser
 from datetime import datetime, timedelta
 print((datetime.now()+timedelta(hours=9)).strftime('%Y-%m-%d %H:%M:%S'))

@@ -9,6 +9,7 @@ from collections import Counter
 from tqdm import tqdm
 import configparser
 from datetime import datetime, timedelta
+import sys
 print((datetime.now()+timedelta(hours=9)).strftime('%Y-%m-%d %H:%M:%S'))
 print("sat image preprocessing..")
 
