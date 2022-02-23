@@ -39,7 +39,7 @@ def find_value(sdate, edate, in_dir, out_dir):
     mlon = grid[1,:,:]
     '''
     mlat = np.load('./ea_2km_latlong1.npy')
-    mlon = np.load('./ea_2km_latlong1.npy')
+    mlon = np.load('./ea_2km_latlong2.npy')
     names = np.array(['LLJ', 'W_SNOW','E_SNOW','WET_SN','CUM_SN','COLD_FRONT','WARM_FRONT','OCC_FRONT','H_POINT','L_POINT'
             ,'HLJ', 'TYPOON', 'R_START', 'R_STOP','RA_SN','HAIL'])
     
