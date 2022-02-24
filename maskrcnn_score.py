@@ -29,6 +29,9 @@ modes = ['sat','rad']
 
 eval_path = os.path.join(path,'processed_data')
 
+if not(os.path.exists(output_path)):
+    os.system('mkdir -p ',output_path)
+
 column =[]
 for i in range(400):
     column.append('gridcell'+str(i+1))

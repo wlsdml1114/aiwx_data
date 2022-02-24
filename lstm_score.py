@@ -18,6 +18,9 @@ output_path = config['path']['output_path']
 
 names = ['rain','heat','snow']
 
+if not(os.path.exists(output_path)):
+    os.system('mkdir -p ',output_path)
+
 for name in names:
 
     print(name,' data loading..')
