@@ -36,7 +36,6 @@ for name in names:
     tn, fp, fn, tp = confusion_matrix(target.flatten(), pred.flatten()).ravel()
     print(confusion_matrix(target.flatten(), pred.flatten()))
     print('acc : ',(tn+tp)/(tn+fp+fn+tp))
-    print('f1-score : ',(tn+tp)/(tn+fp+fn+tp))
 
     region = ['서울·인천·경기도',
     '부산·울산·경상남도',
