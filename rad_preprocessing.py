@@ -9,6 +9,7 @@ from collections import Counter
 from tqdm import tqdm
 import sys
 import configparser
+import time
 from datetime import datetime, timedelta
 print((datetime.now()+timedelta(hours=9)).strftime('%Y-%m-%d %H:%M:%S'))
 print("rad image preprocessing..")
@@ -99,13 +100,20 @@ def fill_black(array, coor_x, coor_y):
 
 # test set
 config = configparser.ConfigParser()    
-config.read('setting.ini', encoding='utf-8') 
+config.read('setting.ini', encoding='CP949') 
 
 START_DATE = datetime.strptime(config['date']['start_date'],'%Y-%m-%d %H:%M:%S')
 END_DATE = datetime.strptime(config['date']['end_date'],'%Y-%m-%d %H:%M:%S')
-path = config['path']['test_path']
+INTERVAL_DATE = END_DATE-START_DATE
+Output_path = config['path']['test_path']
+data_path = config['path']['data_path']
 
-if os.path.exists(os.path.join(path,'processed_data/rad_images_ar.npy')):
+rad_path = 'rad/com/%Y%m/%Y%m%d%H%M_RAD_COMP.png'
+
+if not(os.path.exists(os.path.join(Output_path,'processed_data'))):
+    os.system('mkdir -p '+os.path.join(Output_path,'processed_data'))
+
+if os.path.exists(os.path.join(Output_path,'processed_data/rad_images_ar.npy')):
     print('preprocessed image already exist')
     sys.exit()
 
@@ -129,8 +137,7 @@ img_3 = np.array(img)
 x_3,y_3 = np.where(img_3 == 0)
 
 
-with tqdm(total = 365*24) as pbar:
-    NOW_DATE = START_DATE
+with tqdm(total = (INTERVAL_DATE.days*24 + int(INTERVAL_DATE.seconds/3600) +1)) as pbar:
     while NOW_DATE <= END_DATE:
         pbar.update(1)
         if NOW_DATE <= datetime(2019,1,7,9,0):
@@ -153,7 +160,7 @@ with tqdm(total = 365*24) as pbar:
             preprocessing = delete_black_line
         try:
             
-            img = Image.open(os.path.join(path,NOW_DATE.strftime('com/%Y%m/%Y%m%d%H%M_RAD_COMP.png')))
+            img = Image.open(os.path.join(data_path,NOW_DATE.strftime(rad_path)))
             img = img.crop(crop_tuple)
             img = preprocessing(img)
             img = img.convert('L')
@@ -164,11 +171,17 @@ with tqdm(total = 365*24) as pbar:
             images.append(imgarr)
             use_date.append(NOW_DATE)
 
-        except :
-            missing_date.append(NOW_DATE)
-
+        except Exception as e:
+            if 'Resource' in str(e) :
+                time.sleep(1)
+                continue
+            else :
+                missing_date.append(NOW_DATE)
+        pbar.update(1)
         NOW_DATE = NOW_DATE+timedelta(hours=1)
+        
+        
 
-np.save(os.path.join(path,'processed_data/rad_images_ar.npy'),np.array(images))
-np.save(os.path.join(path,'processed_data/rad_missing_date_ar.npy'),np.array(missing_date))
-np.save(os.path.join(path,'processed_data/rad_use_date_ar.npy'),np.array(use_date))
+np.save(os.path.join(Output_path,'processed_data/rad_images_ar.npy'),np.array(images))
+np.save(os.path.join(Output_path,'processed_data/rad_missing_date_ar.npy'),np.array(missing_date))
+np.save(os.path.join(Output_path,'processed_data/rad_use_date_ar.npy'),np.array(use_date))

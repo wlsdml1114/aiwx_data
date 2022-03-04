@@ -96,7 +96,7 @@ class LitAutoEncoder(pl.LightningModule):
 cuda = torch.device('cuda')
 
 config = configparser.ConfigParser()    
-config.read('setting.ini', encoding='utf-8') 
+config.read('setting.ini', encoding='CP949') 
 
 test_path = config['path']['test_path']
 model_path = config['path']['model_path']
@@ -105,12 +105,21 @@ model = LitAutoEncoder.load_from_checkpoint(os.path.join(model_path,'sat_ae.ckpt
 npy = np.load(os.path.join(test_path,'processed_data/sat_images_ar.npy'))
 
 model = model.cuda()
-images = torch.tensor(npy).cuda()
 
 outputs = []
 
+for num in range(int(len(npy)/100)):
+    try :
+        images = torch.tensor(npy[num*100:(num+1)*100]).cuda()
+    except :
+        images = torch.tensor(npy[num*100:]).cuda()
+    print('%s ~ %s images'%(num*100,(num+1)*100))
+    for i in tqdm(range(len(images))):
+        output = model.forward(images[i:i+1]/256)
+        outputs.append(output.cpu().detach().numpy().flatten())
+'''
 for i in tqdm(range(len(images))):
     output = model.forward(images[i:i+1]/256)
     outputs.append(output.cpu().detach().numpy().flatten())
-
+'''
 np.save(os.path.join(test_path,'processed_data/sat_images_feature.npy'),np.array(outputs))
