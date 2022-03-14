@@ -10,15 +10,15 @@ print((datetime.now()+timedelta(hours=9)).strftime('%Y-%m-%d %H:%M:%S'))
 print("mask rcnn dataset making..")
 
 config = configparser.ConfigParser()    
-config.read('setting.ini', encoding='utf-8') 
+config.read('setting.ini', encoding='CP949') 
 
 START_DATE = datetime.strptime(config['date']['start_date'],'%Y-%m-%d %H:%M:%S')
 END_DATE = datetime.strptime(config['date']['end_date'],'%Y-%m-%d %H:%M:%S')
 path = config['path']['test_path']
 
 
-names = np.array(['LLJ', 'W_SNOW','E_SNOW','WET_SN','CUM_SN','COLD_FRONT','WARM_FRONT','OCC_FRONT','H_POINT','L_POINT'
-                ,'HLJ', 'TYPOON', 'R_START', 'R_STOP','RA_SN','HAIL'])
+names = np.array(['LLJ', 'W-SNOW','E-SNOW','WET-SN','CUM-SN','COLD-FRONT','WARM-FRONT','OCC-FRONT','H-POINT','L-POINT'
+                ,'HLJ', 'TYPOON', 'R-START', 'R-STOP','RA-SN','HAIL'])
 
 in_dir = os.path.join(path,'processed_data/mask')
 out_dir = os.path.join(path,'processed_data')
