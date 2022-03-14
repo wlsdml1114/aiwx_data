@@ -40,14 +40,21 @@ def find_value(sdate, edate, in_dir, out_dir):
     '''
     mlat = np.load('./ea_2km_latlong1.npy')
     mlon = np.load('./ea_2km_latlong2.npy')
-    names = np.array(['LLJ', 'W_SNOW','E_SNOW','WET_SN','CUM_SN','COLD_FRONT','WARM_FRONT','OCC_FRONT','H_POINT','L_POINT'
-            ,'HLJ', 'TYPOON', 'R_START', 'R_STOP','RA_SN','HAIL'])
+    names = np.array(['LLJ', 'W-SNOW','E-SNOW','WET-SN','CUM-SN','COLD-FRONT','WARM-FRONT','OCC-FRONT','H-POINT','L-POINT'
+            ,'HLJ', 'TYPOON', 'R-START', 'R-STOP','RA-SN','HAIL'])
     
 
     while now <= dt_edate:
         print(now)
         str_now = datetime.strftime(now, '%Y%m')
-        file_list = os.listdir('%s/%s'%(in_dir, str_now))
+        file_check  = True
+        while file_check :
+            try :
+                file_list = os.listdir('%s/%s'%(in_dir, str_now))
+            except Exception as e :
+                if 'Resource' in str(e):
+                    continue
+            file_check = False
         count = 0
         for name in names :
             if not(os.path.exists(os.path.join(out_dir,name,str_now))):
@@ -59,8 +66,15 @@ def find_value(sdate, edate, in_dir, out_dir):
                 file_name = file_list[i]
                 check = np.repeat(0,16)
                 masks = [np.zeros((3000,2600)) for i in range(16)]
-                with open('%s/%s/%s'%(in_dir, str_now, file_name), 'r') as json_file:
-                    json_data = json.load(json_file)
+                file_check  = True
+                while file_check :
+                    try :
+                        with open('%s/%s/%s'%(in_dir, str_now, file_name), 'r') as json_file:
+                            json_data = json.load(json_file)
+                    except Exception as e :
+                        if 'Resource' in str(e):
+                            continue
+                    file_check = False
                 '''
                 now_color = 1
                 name_count = np.repeat(0,16)
@@ -116,14 +130,15 @@ def find_value(sdate, edate, in_dir, out_dir):
         now = now+relativedelta(months=1)
 
 config = configparser.ConfigParser()    
-config.read('setting.ini', encoding='utf-8') 
+config.read('setting.ini', encoding='CP949') 
 
 START_DATE = datetime.strptime(config['date']['start_date'],'%Y-%m-%d %H:%M:%S')
 END_DATE = datetime.strptime(config['date']['end_date'],'%Y-%m-%d %H:%M:%S')
 path = config['path']['test_path']
+geojson_path = config['path']['geojson_path']
 
 sdate = START_DATE.strftime('%Y%m')
 edate = END_DATE.strftime('%Y%m')
-in_dir = os.path.join(path,'geojson')
+in_dir = geojson_path
 out_dir = os.path.join(path,'processed_data/mask')
 find_value(sdate, edate, in_dir, out_dir)
