@@ -58,6 +58,25 @@
     (base) jini1114@user1:/mnt/ai-nas02/WORK/jini1114$ docker run -it --gpus all --ipc=host -e NVIDIA_VISIBLE_DEVICES=all -v /mnt/ai-nas02/WORK/jini1114/validation/어노테이션탐지모델/평가용데이터셋/:/testdata/test_dataset/ -v /mnt/ai-nas02/WORK/jini1114/validation/어노테이션탐지모델/시험결과/:/testdata/test_results/ --name final_test 0e5831183a49 /bin/bash
     ```
 - Training
+    - git 다운로드 후 쉘스크립트 실행
+        - setting.ini 파일의 경로 수정
+            - path, dataset 비율 등을 수정
+        
+        - 위험기상 예측모델
+    
+        ```python
+         git clone https://github.com/wlsdml1114/aiwx_data.git
+         cd /aiwx_data/
+         sh LSTM_training.sh
+         ```
+    
+         - 어노테이션 탐지모델
+    
+         ```python
+         git clone https://github.com/wlsdml1114/aiwx_data.git
+         cd /aiwx_data/
+         sh MASK_RCNN_training.sh
+         ```
 
 - Test
     - git 다운로드 후 쉘스크립트 실행
