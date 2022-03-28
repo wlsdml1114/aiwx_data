@@ -57,31 +57,33 @@
     #import한 경우 
     (base) jini1114@user1:/mnt/ai-nas02/WORK/jini1114$ docker run -it --gpus all --ipc=host -e NVIDIA_VISIBLE_DEVICES=all -v /mnt/ai-nas02/WORK/jini1114/validation/어노테이션탐지모델/평가용데이터셋/:/testdata/test_dataset/ -v /mnt/ai-nas02/WORK/jini1114/validation/어노테이션탐지모델/시험결과/:/testdata/test_results/ --name final_test 0e5831183a49 /bin/bash
     ```
+- Training
 
-- git 다운로드 후 쉘스크립트 실행
-    - setting.ini 파일의 경로 수정
-        - test_path, model_path, output_path를 mount한 위치에 맞게 수정
+- Test
+    - git 다운로드 후 쉘스크립트 실행
+        - setting.ini 파일의 경로 수정
+            - test_path, model_path, output_path를 mount한 위치에 맞게 수정
 
-    - 위험기상 예측모델
+        - 위험기상 예측모델
     
-    ```python
-    git clone https://github.com/wlsdml1114/aiwx_data.git
-    cd /aiwx_data/
-    sh LSTM.sh
-    ```
+        ```python
+         git clone https://github.com/wlsdml1114/aiwx_data.git
+         cd /aiwx_data/
+         sh LSTM.sh
+         ```
     
-    - 어노테이션 탐지모델
+         - 어노테이션 탐지모델
     
-    ```python
-    git clone https://github.com/wlsdml1114/aiwx_data.git
-    cd /aiwx_data/
-    sh MASK_RCNN.sh
-    ```
+         ```python
+         git clone https://github.com/wlsdml1114/aiwx_data.git
+         cd /aiwx_data/
+         sh MASK_RCNN.sh
+         ```
 
-- 모델 결과 확인
-    - test_results 디렉토리에 모델의 최종 결과를 csv형태로 저장
+    - 모델 결과 확인
+        - test_results 디렉토리에 모델의 최종 결과를 csv형태로 저장
         - 실행 로그는 logs.txt에 저장
-    - 위험기상 예측모델
-        - 폭우(rain), 폭염(heat), 폭설(snow)의 이름으로 모델 예측결과인 prediction.csv와 실제 정답인 target.csv를 별도의 파일로 저장
-    - 어노테이션 탐지모델
-        - 16종의 어노테이션 각각에 대한 탐지결과 grid cell인 prediction.csv와 실제 정답 grid cell인 target.csv를 별도의 파일로 저장
+        - 위험기상 예측모델
+            - 폭우(rain), 폭염(heat), 폭설(snow)의 이름으로 모델 예측결과인 prediction.csv와 실제 정답인 target.csv를 별도의 파일로 저장
+        - 어노테이션 탐지모델
+            - 16종의 어노테이션 각각에 대한 탐지결과 grid cell인 prediction.csv와 실제 정답 grid cell인 target.csv를 별도의 파일로 저장
