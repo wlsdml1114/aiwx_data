@@ -6,6 +6,7 @@ from PIL import Image, ImageDraw
 from dateutil.relativedelta import relativedelta
 from tqdm import tqdm, trange
 import configparser
+
 print((datetime.now()+timedelta(hours=9)).strftime('%Y-%m-%d %H:%M:%S'))
 print("geojson to mask preprocessing..")
 

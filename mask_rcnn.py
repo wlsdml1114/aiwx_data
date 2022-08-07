@@ -4,23 +4,14 @@ import numpy as np
 import torch
 import math
 import sys
-import time
-import argparse
-from PIL import Image
 import torchvision
 from torch import nn, Tensor
 from torchvision.transforms import functional as F
-from torchvision.transforms import transforms as T
 from typing import List, Tuple, Dict, Optional
 from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
-from torchvision.models.detection import FasterRCNN
-from torchvision.models.detection.rpn import AnchorGenerator
 from torchvision.models.detection.mask_rcnn import MaskRCNNPredictor
 import utils
-from datetime import datetime, timedelta
-from dateutil.relativedelta import relativedelta
 import configparser
-from collections import Counter
 
 class Compose(object):
     def __init__(self, transforms):
@@ -31,89 +22,11 @@ class Compose(object):
             image, target = t(image, target)
         return image, target
 
-
-class RandomHorizontalFlip(T.RandomHorizontalFlip):
-    def forward(self, image: Tensor,
-                target: Optional[Dict[str, Tensor]] = None) -> Tuple[Tensor, Optional[Dict[str, Tensor]]]:
-        if torch.rand(1) < self.p:
-            image = F.hflip(image)
-            if target is not None:
-                width, _ = F._get_image_size(image)
-                target["boxes"][:, [0, 2]] = width - target["boxes"][:, [2, 0]]
-                if "masks" in target:
-                    target["masks"] = target["masks"].flip(-1)
-                if "keypoints" in target:
-                    keypoints = target["keypoints"]
-                    keypoints = _flip_coco_person_keypoints(keypoints, width)
-                    target["keypoints"] = keypoints
-        return image, target
-
-def _flip_coco_person_keypoints(kps, width):
-    flip_inds = [0, 2, 1, 4, 3, 6, 5, 8, 7, 10, 9, 12, 11, 14, 13, 16, 15]
-    flipped_data = kps[:, flip_inds]
-    flipped_data[..., 0] = width - flipped_data[..., 0]
-    # Maintain COCO convention that if visibility == 0, then x, y = 0
-    inds = flipped_data[..., 2] == 0
-    flipped_data[inds] = 0
-    return flipped_data
-
 class ToTensor(nn.Module):
     def forward(self, image: Tensor,
                 target: Optional[Dict[str, Tensor]] = None) -> Tuple[Tensor, Optional[Dict[str, Tensor]]]:
         image = F.to_tensor(image)
         return image, target
-
-def delete_yellow_line_coms(pil_image):
-    indx = [1,1,-1,-1]
-    indy = [1,-1,1,-1]
-    temp = pil_image
-    for i in range(temp.size[0]):
-        for j in range(temp.size[1]):
-            r,g,b = temp.getpixel((i,j))
-            if  (r==255) & (g==255) & (b==0):
-                re_r, re_g, re_b = 0,0,0
-                count = 0
-                for k in range(4):
-                    try :
-                        r,g,b = temp.getpixel((i+indx[k],j+indy[k]))
-                        if  not((r==255) & (g==255) & (b==0)):
-                            re_r += r
-                            re_g += g
-                            re_b += b
-                            count+=1
-                    except :
-                        continue
-                if count != 0 :
-                    temp.putpixel((i,j),(int(re_r/count),int(re_g/count),int(re_b/count)))
-                else : 
-                    temp.putpixel((i,j),(0,0,0))
-    return temp
-
-def delete_yellow_line_gk2a(pil_image):
-    indx = [1,1,-1,-1]
-    indy = [1,-1,1,-1]
-    temp = pil_image
-    for i in range(temp.size[0]):
-        for j in range(temp.size[1]):
-            r,g,b,a = temp.getpixel((i,j))
-            if  (r==255) & (g==255) & (b==0):
-                re_r, re_g, re_b = 0,0,0
-                count = 0
-                for k in range(4):
-                    try :
-                        r,g,b,a = temp.getpixel((i+indx[k],j+indy[k]))
-                        if  not((r==255) & (g==255) & (b==0)):
-                            re_r += r
-                            re_g += g
-                            re_b += b
-                            count+=1
-                    except :
-                        continue
-                if count != 0 :
-                    temp.putpixel((i,j),(int(re_r/count),int(re_g/count),int(re_b/count)))
-                else : 
-                    temp.putpixel((i,j),(0,0,0))
-    return temp
 
 class CustomDataset(object):
     def __init__(self, root,anno, transforms,mode, num=0):
